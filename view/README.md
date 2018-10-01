@@ -22,3 +22,5 @@ For example
 15.6014° S, 56.0979° W == [ -56.0979, -15.6014 ]
 52.2297° N, 21.0122° E == [ 21.0122, 52.2297 ]
 ```
+
+Remember about remove all build js and css before rebuild project because part of data comes from cache.

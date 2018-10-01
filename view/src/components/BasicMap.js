@@ -8,7 +8,6 @@ import {
 import tooltip from 'wsdm-tooltip';
 import { PageContainer } from './Styles';
 import SelectRegion from './SelectRegion';
-import LocalStorage, { _CACHE_COUNTRY_CODES } from '../services/LocalStorage';
 
 export default class BasicMap extends Component {
 	
@@ -153,7 +152,7 @@ export default class BasicMap extends Component {
 							disablePanning
 							zoom={this.state.zoom}
 						>
-							<Geographies geography={this.state.worldData}>
+							<Geographies geography={this.state.worldData} disableOptimization>
 								{this.renderGeographies}
 							</Geographies>
 						
@@ -165,13 +164,7 @@ export default class BasicMap extends Component {
 	};
 	
 	renderGeographies = (geographies, projection) => {
-		
-		const countryCodes = LocalStorage.get(_CACHE_COUNTRY_CODES);
-		if (countryCodes) {
-			return geographies.map((geography, i) => this.renderGeography(countryCodes, projection, geography, i))
-		} else {
-			window.location.reload();
-		}
+		return geographies.map((geography, i) => this.renderGeography(this.props.countryCodes, projection, geography, i))
 	};
 	
 	renderGeography = (countryCodes, projection, geography, i) => {
