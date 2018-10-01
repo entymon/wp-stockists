@@ -1,0 +1,29 @@
+{
+  "name": "view",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "d3-geo": "^1.10.0",
+    "file-loader": "^1.1.11",
+    "json-loader": "^0.5.7",
+    "lodash": "^4.17.10",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-modal": "^3.5.1",
+    "react-responsive-modal": "^3.2.0",
+    "react-scripts": "1.1.4",
+    "react-select": "^2.0.0",
+    "react-simple-maps": "^0.12.1",
+    "styled-components": "^3.3.3",
+    "topojson-client": "^3.0.0",
+    "wsdm-tooltip": "^0.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start --dev=1",
+    "build": "react-scripts build",
+    "postbuild": "cp -v .htaccess build/.htaccess && cp -v build/static/js/main.*.js build/static/js/main.js && cp -v build/static/js/main.*.js.map build/static/js/main.js.map && cp -v build/static/css/main.*.css build/static/css/main.css && cp -v build/static/css/main.*.css.map build/static/css/main.css.map",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

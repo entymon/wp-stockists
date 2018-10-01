@@ -1,0 +1,12 @@
+{
+    "name": "entymon/jolly-stockists-plugin",
+    "description": "Entymon Stockist Plugin. Gives opportunity to upload stockists content.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "entymon",
+            "email": "pawel.olejniczak.i@gmail.com"
+        }
+    ],
+    "require": {}
+}
