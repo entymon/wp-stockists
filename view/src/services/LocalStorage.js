@@ -1,19 +1,23 @@
-export const _CACHE_COUNTRIES = '_cache_countries';
-export const _CACHE_COUNTRY_CODES = '_cache_country_codes';
-export const _CACHE_STOCKISTS = '_cache_stockists';
+export const _CACHE_COUNTRIES = 'cache-countries';
+export const _CACHE_COUNTRY_CODES = 'cache-country-codes';
+export const _CACHE_STOCKISTS = 'cache-stockists';
 
 export default class LocalStorage {
 
-	add = (itemKey, value) => {
-		localStorage.setItem(itemKey, value);
+	static add = (itemKey, value) => {
+		localStorage.setItem(itemKey, JSON.stringify(value));
 	};
 	
-	remove = (itemKey) => {
+	static remove = (itemKey) => {
 		localStorage.removeItem(itemKey);
 	};
 	
-	get = (itemKey) => {
-		localStorage.getItem(itemKey);
+	static get = (itemKey) => {
+		const data = localStorage.getItem(itemKey);
+		if (data) {
+			return JSON.parse(data);
+		}
+		return null;
 	}
 	
 }

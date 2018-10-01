@@ -38,16 +38,23 @@ export default class PluginIndex extends React.Component {
 		return countryCodes;
 	};
 	
+	/**
+	 *
+	 * @param regions
+	 * @returns {Promise<any>}
+	 */
 	retrieveCountryData = (regions) => {
-		let countries = {};
-		for(let regionName in regions) {
-			countries = { ...countries, ...regions[regionName].countries };
-		}
-		const countryCodes = this.setCountryCodes(countries);
-		return {
-			countries,
-			countryCodes
-		};
+		return new Promise((resolve) => {
+			let countries = {};
+			for(let regionName in regions) {
+				countries = { ...countries, ...regions[regionName].countries };
+			}
+			const countryCodes = this.setCountryCodes(countries);
+			resolve({
+					countries,
+					countryCodes
+				});
+		});
 	};
 	
 	onOpenModal = () => {
@@ -67,17 +74,19 @@ export default class PluginIndex extends React.Component {
 		
 		axios.get(`${hostname}/wp-json/jolly/v1/stockist/stockists`).then(res => {
 			
-			const data = this.retrieveCountryData(res.data);
-			const sortedData = _.sortBy(res.data, ['order']);
-			this.setState({
-				countries: data.countries,
-				countryCodes: data.countryCodes,
-				stockists: sortedData
+			this.retrieveCountryData(res.data).then((data) => {
+				
+				const sortedData = _.sortBy(res.data, ['order']);
+				this.setState({
+					countries: data.countries,
+					countryCodes: data.countryCodes,
+					stockists: sortedData
+				});
+				
+				LocalStorage.add(_CACHE_COUNTRIES, data.countries);
+				LocalStorage.add(_CACHE_COUNTRY_CODES, data.countryCodes);
+				LocalStorage.add(_CACHE_STOCKISTS, sortedData);
 			});
-			
-			LocalStorage.add(_CACHE_COUNTRIES, data.countries);
-			LocalStorage.add(_CACHE_COUNTRY_CODES, data.countryCodes);
-			LocalStorage.add(_CACHE_STOCKISTS, sortedData);
 		});
 	};
 	

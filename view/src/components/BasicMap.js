@@ -164,26 +164,17 @@ export default class BasicMap extends Component {
 		)
 	};
 	
-	_getCountryCodes = () => {
-		const countryCodes = LocalStorage.get(_CACHE_COUNTRY_CODES);
-		if (countryCodes.length === 0) {
-			this._getCountryCodes();
-		} else {
-			return countryCodes;
-		}
-	};
-	
 	renderGeographies = (geographies, projection) => {
 		
 		const countryCodes = LocalStorage.get(_CACHE_COUNTRY_CODES);
-		if (countryCodes.length === 0) {
-			this.renderGeographies(geographies, projection);
+		if (countryCodes) {
+			return geographies.map((geography, i) => this.renderGeography(countryCodes, projection, geography, i))
 		} else {
-			return geographies.map((geography, i) => this.renderGeography(projection, geography, i))
+			window.location.reload();
 		}
 	};
 	
-	renderGeography = (projection, geography, i) => {
+	renderGeography = (countryCodes, projection, geography, i) => {
 		
 		if (geography.id !== 'ATA') {
 			return (
@@ -197,19 +188,19 @@ export default class BasicMap extends Component {
 					onMouseLeave={this.handleMouseLeave}
 					style={{
 						default: {
-							fill: (this.props.countryCodes.includes(geography.id) ? '#faca0c' : '#ECEFF1'),
+							fill: (countryCodes.includes(geography.id) ? '#faca0c' : '#ECEFF1'),
 							stroke: '#607D8B',
 							strokeWidth: 0.75,
 							outline: 'none'
 						},
 						hover: {
-							fill: (this.props.countryCodes.includes(geography.id) ? '#1c4ea3' : '#ECEFF1'),
+							fill: (countryCodes.includes(geography.id) ? '#1c4ea3' : '#ECEFF1'),
 							stroke: '#607D8B',
 							strokeWidth: 0.75,
 							outline: 'none'
 						},
 						pressed: {
-							fill: (this.props.countryCodes.includes(geography.id) ? '#faca0c' : '#ECEFF1'),
+							fill: (countryCodes.includes(geography.id) ? '#faca0c' : '#ECEFF1'),
 							stroke: '#607D8B',
 							strokeWidth: 0.75,
 							outline: 'none'
