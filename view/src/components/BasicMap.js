@@ -8,6 +8,7 @@ import {
 import tooltip from 'wsdm-tooltip';
 import { PageContainer } from './Styles';
 import SelectRegion from './SelectRegion';
+import LocalStorage, { _CACHE_COUNTRY_CODES } from '../services/LocalStorage';
 
 export default class BasicMap extends Component {
 	
@@ -163,8 +164,23 @@ export default class BasicMap extends Component {
 		)
 	};
 	
+	_getCountryCodes = () => {
+		const countryCodes = LocalStorage.get(_CACHE_COUNTRY_CODES);
+		if (countryCodes.length === 0) {
+			this._getCountryCodes();
+		} else {
+			return countryCodes;
+		}
+	};
+	
 	renderGeographies = (geographies, projection) => {
-		return geographies.map((geography, i) => this.renderGeography(projection, geography, i))
+		
+		const countryCodes = LocalStorage.get(_CACHE_COUNTRY_CODES);
+		if (countryCodes.length === 0) {
+			this.renderGeographies(geographies, projection);
+		} else {
+			return geographies.map((geography, i) => this.renderGeography(projection, geography, i))
+		}
 	};
 	
 	renderGeography = (projection, geography, i) => {

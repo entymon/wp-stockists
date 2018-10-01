@@ -9,6 +9,7 @@ import { ModalBody, ModalHeader } from './Styles';
 import Stockist from './Stockist';
 import styled from 'styled-components';
 import config from '../config/config';
+import LocalStorage, { _CACHE_COUNTRIES, _CACHE_COUNTRY_CODES, _CACHE_STOCKISTS } from '../services/LocalStorage';
 
 const Wrapper = styled.div.attrs({ className: 'wrapper' })`
 	
@@ -67,11 +68,16 @@ export default class PluginIndex extends React.Component {
 		axios.get(`${hostname}/wp-json/jolly/v1/stockist/stockists`).then(res => {
 			
 			const data = this.retrieveCountryData(res.data);
+			const sortedData = _.sortBy(res.data, ['order']);
 			this.setState({
 				countries: data.countries,
 				countryCodes: data.countryCodes,
-				stockists: _.sortBy(res.data, ['order'])
+				stockists: sortedData
 			});
+			
+			LocalStorage.add(_CACHE_COUNTRIES, data.countries);
+			LocalStorage.add(_CACHE_COUNTRY_CODES, data.countryCodes);
+			LocalStorage.add(_CACHE_STOCKISTS, sortedData);
 		});
 	};
 	
